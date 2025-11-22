@@ -9,7 +9,7 @@ A high-fidelity, DVFS-aware, network-aware GPU scheduling simulator for edge clu
 - GPU DVFS with per-frequency power/energy logging  
 - Optimizer-based scheduling (min-power, min-latency, max-efficiency)  
 - Least-load, random, round-robin heuristics  
-- SimPy-driven packet/task/job pipeline  
+- FEL-driven packet/task/job pipeline  
 - Config-driven simulation (`config.json`)  
 - Automatic CSV output for:
   - packet summary
