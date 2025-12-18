@@ -1,0 +1,248 @@
+{
+  "Job_Settings": {
+    "TIME_UNITS": "s",
+    "Job_Arrivals": {
+      "Model": "poisson",
+      "Lambda_per_s": 4.0,
+      "Window_s": 300,
+      "Seed": 41,
+      "First_Job_Offset_s": [0, 0]
+    },
+    "Job_Duration": { "Model": "uniform", "Range_s": [10, 60] },
+    "Anchor_First_Job": false
+  },
+  "Logging": {
+    "LIGHT_PACKET_LOG": true,
+    "PREGEN_PROGRESS_EVERY": 5000000
+  },
+  "Task_Settings": {
+    "SERVICE_ARRIVAL_RATE_fps": 30,
+    "stride": 1,
+    "Task_Count_Policy": "ceil",
+    "Task_Min_Per_Job": 1,
+    "Task_First_Offset_s": 0.0001,
+    "START_GAP_RANGE": [0.0, 0.0], 
+    "Packetization": { "mode": "by_count", "count": 3, "last_policy": "shrink", "header_kb": 0.0 },
+    "UL_Packet_Spacing_s": 0.000005,
+    "DL_Packet_Spacing_s": 0.000005,         
+    "UL_INTERARR_RANGE": [0.00001, 0.00005],   
+    "Uplink_Task_KB_Range": [40,50],
+    "Downlink_Task_KB_Range": [40,50],
+    "Workload_FLOP_Range": [20000000000,70000000000],
+    "Packet_Size_KB_Range": [1.5,1.5],
+    "REF_GPU_PATH": ["C1","N1","G1"],
+    "REF_RC_LINK": "R0-RC1",
+    "DEADLINE_HEADROOM_RANGE_ms": [8, 10],        
+    "DEADLINE_QUEUE_BOUND_ms": 0.10,                 
+    "DEADLINE_MAX_FRAMES_SLIP": 1,                   
+    "DEADLINE_PERIOD_CAP_ETA": 1.0,   
+    "DEADLINE_REF_A_s": 0.02,
+    "DEADLINE_REF_FLOOR_s": 0.030
+  },
+  "DeadlinePolicy": {"Clamp_To_Job_Window": false },
+  "FAST_DECIDER": true,
+  "Scheduler": {
+    "FREQ_POLICY": "balanced",
+    "UTIL_TAU_S": 0.5
+  },
+  "Cluster_Generation_Settings": {
+    "num_clusters": 2,
+    "nodes_per_cluster": 2,
+    "gpus_per_node": 1
+  },
+  "Network_Settings": {
+    "NUM_PORTS_PER_CLUSTER": 1,
+    "Queue_Capacity": 1000,
+    "FAST_RC_UL": true,
+    "FAST_R0_DL": true,
+    "DL_ARRIVAL_MODE": "staggered"  
+  },
+  "GPU_Specs_Meta": {
+    "freq_units": "MHz",
+    "cp_units": "FLOPs_per_s_per_MHz",
+    "phi_power_units": "W_per_MHz",
+    "rate_units": "FLOPs_per_s",
+    "capacity_formula": "kappa = C_p * f_MHz",
+    "cp_definition": "C_p = proc_units * IPC * (flops_per_op / cycles_per_op) * 1e6"
+  },
+  "GPU_Specs": {
+    "RTX_6000_Ada": {
+      "freqs": [1500, 1800, 2100, 2300, 2505],
+      "f_max": 2505,
+      "proc_units": 18176,          
+      "IPC": 1.0,                   
+      "flops_per_op": 2.0,          
+      "cycles_per_op": 1.0,         
+      "C_p": 3.6352e10,           
+      "P_static_W": 60, "P_st": 60, "P_max_W": 300,
+      "v": 0.8, "alpha": 1, "power_exp": 1,
+      "throughput": "91.1 TFLOPs FP32 @ ~2505 MHz"
+    },
+    "H100_SXM": {
+      "freqs": [1200, 1500, 1800, 1980],
+      "f_max": 1980,
+      "proc_units": 16896,
+      "IPC": 1.0,
+      "flops_per_op": 2.0,
+      "cycles_per_op": 1.0,
+      "C_p": 3.3792e10,            
+      "P_static_W":60, "P_st": 60, "P_max_W": 700,
+      "v": 0.7, "alpha": 1, "power_exp": 1,
+      "throughput": "67 TFLOPs FP32 @ ~1980 MHz"
+    }
+  },
+  "Cluster_Delay_Base_s": {
+    "C1": 0.0,
+    "C2": 0.0005 
+  },
+  "Cluster_Config": {
+  "C1": {
+    "N1": {
+      "G1": {
+        "type": "RTX_6000_Ada",
+        "service_rates": {
+          "1500": 54528000000000,
+          "1800": 65433600000000,
+          "2100": 76339200000000,
+          "2300": 83609600000000,
+          "2505": 91061760000000
+        },
+        "rate_units": "FLOPs_per_s"
+      }
+    },
+    "N2": {
+      "G1": {
+        "type": "RTX_6000_Ada",
+        "service_rates": {
+          "1500": 54528000000000,
+          "1800": 65433600000000,
+          "2100": 76339200000000,
+          "2300": 83609600000000,
+          "2505": 91061760000000
+        },
+        "rate_units": "FLOPs_per_s"
+      }
+    }
+  },
+  "C2": {
+    "N1": {
+      "G1": {
+        "type": "H100_SXM",
+        "service_rates": {
+          "1200": 40550400000000,
+          "1500": 50688000000000,
+          "1800": 60825600000000,
+          "1980": 66908160000000
+        },
+        "rate_units": "FLOPs_per_s"
+      }
+    },
+    "N2": {
+      "G1": {
+        "type": "H100_SXM",
+        "service_rates": {
+          "1200": 40550400000000,
+          "1500": 50688000000000,
+          "1800": 60825600000000,
+          "1980": 66908160000000
+        },
+        "rate_units": "FLOPs_per_s"
+      }
+    }
+  }
+},
+  "Comm_To_Cluster_Map": {
+    "R0": [
+      "RC1",
+      "RC2"
+    ]
+  },
+  "RC_To_Cluster_Map": {
+    "RC1": "C1",
+    "RC2": "C2"
+  },
+  "R0_RC_Links": {
+    "R0-RC1": { "r0_c": 1000000, "rc_0": 1000000, "uplink_prop_delay": 0.001, "downlink_prop_delay":0.001},
+    "R0-RC2": { "r0_c": 1000000, "rc_0": 1000000, "uplink_prop_delay": 0.001, "downlink_prop_delay": 0.001}
+  },
+  "threads": 2,
+ "optimizer_power": {
+    "min_gpu_service_time_s": 0.00002,
+    "cluster_share_cap": 1.0,
+    "share_penalty_weight": 0.0,
+    "min_active_clusters": 2,
+    "link_cap_penalty_weight": 200.0,
+    "gpu_cap_penalty_weight": 1.0,
+    "deadline_penalty_weight": 0.0,
+    "rho_cap": 0.30,
+    "rho_over_penalty_weight": 1.0,
+    "rho_penalty": 200.0,
+    "rho_cap_total": 0.0,
+    "freq_step_weight": 0.0,
+    "freq_tiebreak_eps": 1e-3,
+    "freq_penalty_weight": 0.0,
+    "bg_util_weight": 0.0,
+    "latency_weight": 0.0,
+    "min_freq_map": {
+      "RTX_6000_Ada": 1500,
+      "H100_SXM": 1200
+    }
+  },
+  "optimizer_latency": {
+    "min_gpu_service_time_s": 0.00002,  
+    "load_balance_weight": 0.0, 
+    "cluster_share_cap": 0.7,
+    "share_penalty_weight": 0.0,
+    "min_active_clusters": 1,
+    "link_cap_penalty_weight": 0.3,
+    "gpu_cap_penalty_weight": 0.1,
+    "deadline_penalty_weight": 1e-2, 
+    "rho_cap": 0.75,
+    "rho_penalty": 1e5,
+    "rho_cap_total": 0.0,
+    "bg_util_weight": 0.0,
+    "freq_step_weight": 0.0,
+    "freq_penalty_weight": 0.0,
+    "freq_tiebreak_eps": 0.0,
+    "extra_lat_boost_w": 0.5
+  },
+  "Optimizer_Defaults": {
+    "use_arrival_rates": true,
+    "pwl_points": 2,
+    "pwl_rho_max": 0.85
+    },
+  "optimizer_efficiency": {
+    "min_gpu_service_time_s": 2e-5,
+    "cluster_share_cap": 0.7,
+    "share_penalty_weight": 0,
+    "min_active_clusters": 1,
+    "gpu_cap_penalty_weight": 1.0,
+    "link_cap_penalty_weight": 1.0,
+    "deadline_penalty_weight": 2e5,
+    "rho_cap": 0.75,
+    "rho_penalty": 1e5,
+    "rho_cap_total": 0.0,
+    "theta_penalty_weight": 0,
+    "eff_mode": "dinkelbach",
+    "eff_power_weight":        0.0,
+    "eff_latency_weight":      0.0,
+    "eff_bg_load_weight":      0.3,
+    "eff_load_balance_weight": 0.3,
+    "eff_balance_weight":      0.0,
+    "eff_theta_init":          1e-2,
+    "eff_max_iter":            1,
+    "eff_tol":                 1e-3,
+    "min_freq_global": 0,
+    "min_freq_map": {
+      "RTX_6000_Ada": 1500,
+      "H100_SXM": 1200
+    },
+    "freq_penalty_weight": 0.2,
+    "Theta_Min": {
+      "ref_workload_flops":      45000000000,
+      "ref_workload_percentile": 75,
+      "safety_factor":           0.60,
+      "use_pending_tasks_median": true
+    }
+  }
+}
