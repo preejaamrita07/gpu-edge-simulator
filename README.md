@@ -172,6 +172,10 @@ python pregen_lambdas.py
 File: 
 - run_all_strategies.sh
 
+```bash
+chmod +x run_all_strategies.sh
+python run_all_strategies.sh
+
 ------
 ## Run All Strategies (.py file)
 
@@ -216,3 +220,4 @@ This executes:
 
 ```bash
 python plot_from_task_packets.py
+
